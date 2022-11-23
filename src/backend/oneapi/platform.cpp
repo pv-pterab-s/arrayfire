@@ -151,7 +151,7 @@ string getDeviceInfo() noexcept {
 
             size_t msize =
                 device->get_info<sycl::info::device::global_mem_size>();
-            info << id << " " << getPlatformName(*device) << ": " << ltrim(dstr)
+            info << id << " " << getPlatformName(*device) << ": " << common::ltrim(dstr)
                  << ", " << msize / 1048576 << " MB";
 #ifndef NDEBUG
             info << " -- ";
@@ -320,7 +320,7 @@ bool isHostUnifiedMemory(const sycl::device& device) {
 }
 
 bool OneAPICPUOffload(bool forceOffloadOSX) {
-    static const bool offloadEnv = getEnvVar("AF_ONEAPI_CPU_OFFLOAD") != "0";
+    static const bool offloadEnv = common::getEnvVar("AF_ONEAPI_CPU_OFFLOAD") != "0";
     bool offload                 = false;
     if (offloadEnv) { offload = isHostUnifiedMemory(getDevice()); }
 #if OS_MAC
@@ -501,7 +501,7 @@ void removeDeviceContext(sycl::device dev, sycl::context ctx) {
 }
 
 bool synchronize_calls() {
-    static const bool sync = getEnvVar("AF_SYNCHRONOUS_CALLS") == "1";
+    static const bool sync = common::getEnvVar("AF_SYNCHRONOUS_CALLS") == "1";
     return sync;
 }
 
@@ -513,7 +513,7 @@ int& getMaxJitSize() {
 #endif
     thread_local int length = 0;
     if (length <= 0) {
-        string env_var = getEnvVar("AF_OPENCL_MAX_JIT_LEN");
+        string env_var = common::getEnvVar("AF_OPENCL_MAX_JIT_LEN");
         if (!env_var.empty()) {
             int input_len = stoi(env_var);
             length        = input_len > 0 ? input_len : MAX_JIT_LEN;

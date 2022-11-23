@@ -124,18 +124,18 @@ DeviceManager::DeviceManager()
     nDevices = mDevices.size();
 
     bool default_device_set = false;
-    string deviceENV        = getEnvVar("AF_ONEAPI_DEFAULT_DEVICE");
+    string deviceENV        = common::getEnvVar("AF_ONEAPI_DEFAULT_DEVICE");
     if (!deviceENV.empty()) {
         // TODO: handle default device from env variable
     }
 
-    deviceENV = getEnvVar("AF_OPENCL_DEFAULT_DEVICE_TYPE");
+    deviceENV = common::getEnvVar("AF_OPENCL_DEFAULT_DEVICE_TYPE");
     if (!default_device_set && !deviceENV.empty()) {
         // TODO: handle default device by type env variable
     }
 
     // Define AF_DISABLE_GRAPHICS with any value to disable initialization
-    string noGraphicsENV = getEnvVar("AF_DISABLE_GRAPHICS");
+    string noGraphicsENV = common::getEnvVar("AF_DISABLE_GRAPHICS");
     if (fgMngr->plugin().isLoaded() && noGraphicsENV.empty()) {
         // TODO: handle forge shared contexts
     }
