@@ -49,11 +49,7 @@ namespace oneapi {
 
 static inline bool compare_default(const unique_ptr<sycl::device>& ldev,
                                    const unique_ptr<sycl::device>& rdev) {
-    // TODO: update sorting criteria
-    // select according to something applicable to oneapi backend
-    auto l_mem = ldev->get_info<sycl::info::device::global_mem_size>();
-    auto r_mem = rdev->get_info<sycl::info::device::global_mem_size>();
-    return l_mem > r_mem;
+    return (ldev->get_platform().get_info<sycl::info::platform::name>() == "Intel(R) Level-Zero");
 }
 
 DeviceManager::DeviceManager()
@@ -106,7 +102,7 @@ DeviceManager::DeviceManager()
     mDevices.clear();
 
     // Create contexts and queues once the sort is done
-    for (int i = 0; i < nDevices; i++) {
+    for (int i = 0; i < 1 + 0 * nDevices; i++) {
         if (devices[i]->is_gpu() || devices[i]->is_cpu() ||
             !devices[i]->is_accelerator()) {
             try {

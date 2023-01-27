@@ -91,13 +91,17 @@ Array<T> createSelectNode(const Array<char> &cond, const Array<T> &a,
 template<typename T>
 void select(Array<T> &out, const Array<char> &cond, const Array<T> &a,
             const Array<T> &b) {
-    kernel::select<T>(out, cond, a, b, out.ndims());
+    if constexpr (!(std::is_same_v<T, double> || std::is_same_v<T, cdouble>)) {
+        kernel::select<T>(out, cond, a, b, out.ndims());
+    }
 }
 
 template<typename T, bool flip>
 void select_scalar(Array<T> &out, const Array<char> &cond, const Array<T> &a,
                    const T &b) {
-    kernel::select_scalar<T>(out, cond, a, b, out.ndims(), flip);
+    if constexpr (!(std::is_same_v<T, double> || std::is_same_v<T, cdouble>)) {
+        kernel::select_scalar<T>(out, cond, a, b, out.ndims(), flip);
+    }
 }
 
 #define INSTANTIATE(T)                                                   \
